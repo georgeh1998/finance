@@ -53,7 +53,7 @@ def make_filename(date_str: str, category: str, fiscal_month: int) -> str:
     return f"{fy}_{fiscal_month}_{suffix}"
 
 
-def extract_ir_list(snapshot_file: str, limit: int = 8) -> list[dict]:
+def extract_ir_list(snapshot_file: str, limit: int = 999) -> list[dict]:
     with open(snapshot_file) as f:
         text = f.read()
 
@@ -105,7 +105,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     snapshot_file = sys.argv[1]
-    limit = int(sys.argv[2]) if len(sys.argv) >= 3 else 8
+    limit = int(sys.argv[2]) if len(sys.argv) >= 3 else 999
 
     entries = extract_ir_list(snapshot_file, limit)
     if not entries:

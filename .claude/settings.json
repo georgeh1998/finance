@@ -5,9 +5,10 @@
       "WebFetch(domain:playwright.dev)",
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_snapshot",
-      "Bash(python3 (*/extract_ir_list.py*)",
-      "Bash(python3 (*/extract_pdf_url.py*)",
-      "Bash(python3 (*/pdf-download.py*)"
+      "mcp__playwright__browser_close",
+      "Bash(python3 */extract_ir_list.py*)",
+      "Bash(python3 */extract_pdf_url.py*)",
+      "Bash(python3 */pdf-download.py*)"
     ]
   },
   "enableAllProjectMcpServers": true,
