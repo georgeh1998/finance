@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m venv .venv)",
+      "Bash(source .venv/bin/activate)",
+      "Bash(pip install -r requirements.txt)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(python -m pytest tests/:*)",
+      "Bash(python main.py:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(ls:*)",
+      "Bash(which python3)",
+      "Bash(python3 --version)",
+      "Bash(python --version)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
