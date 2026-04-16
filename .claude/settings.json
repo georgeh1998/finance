@@ -10,7 +10,7 @@
       "Bash(python3:*)",
       "Bash(python3 -m pytest:*)",
       "Bash(python3 -m venv .venv)",
-      "Bash(source .venv/bin/activate)",
+      "Bash(source:*)",
       "Bash(deactivate)"
     ]
   },
