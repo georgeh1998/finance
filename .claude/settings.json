@@ -1,17 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pip3 install:*)",
-      "Bash(pip3 install -r requirements.txt)",
-      "Bash(pip3 uninstall:*)",
-      "Bash(pip3 list:*)",
-      "Bash(pip3 show:*)",
-      "Bash(pip3 index:*)",
-      "Bash(python3:*)",
-      "Bash(python3 -m pytest:*)",
-      "Bash(python3 -m venv .venv)",
-      "Bash(source:*)",
-      "Bash(deactivate)"
+      "Bash(.venv/bin/pip3 install:*)",
+      "Bash(.venv/bin/pip3 install -r requirements.txt)",
+      "Bash(.venv/bin/pip3 uninstall:*)",
+      "Bash(.venv/bin/pip3 list:*)",
+      "Bash(.venv/bin/pip3 show:*)",
+      "Bash(.venv/bin/pip3 index:*)",
+      "Bash(.venv/bin/python3:*)",
+      "Bash(.venv/bin/python3 -m pytest:*)",
+      "Bash(python3 -m venv .venv)"
     ]
   },
   "enableAllProjectMcpServers": true,
@@ -19,4 +17,3 @@
     "context7"
   ]
 }
-
