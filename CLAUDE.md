@@ -7,6 +7,18 @@
 - パッケージ操作は `.venv/bin/pip3` を使う
 - コマンド実行は `.venv/bin/python3` を使う
 
+## スクリプト実行
+
+パッケージを跨いだ import (例: `swing_trading` から `stock` を import) を含むスクリプトは、プロジェクトルートからモジュール形式で実行する。
+
+```bash
+# ⭕ モジュール形式 (ドット区切り、.py なし)
+.venv/bin/python3 -m swing_trading.how_to_use_swing_trading
+
+# ❌ パス形式だと他パッケージが import できずエラーになる
+.venv/bin/python3 swing_trading/how_to_use_swing_trading.py
+```
+
 ## テスト
 
 ```bash
