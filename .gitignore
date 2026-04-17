@@ -5,3 +5,4 @@ company/*/analysis/
 .venv/
 .env
 .env.swp
+__pycache__/

@@ -2,6 +2,7 @@
 
 ## Python 環境
 
+- Python バージョン: 3.12
 - 仮想環境がなければ作成する: `python3 -m venv .venv`
 - パッケージ操作は `.venv/bin/pip3` を使う
 - コマンド実行は `.venv/bin/python3` を使う
