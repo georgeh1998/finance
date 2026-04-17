@@ -3,3 +3,5 @@
 .playwright-mcp/
 company/*/analysis/
 .venv/
+.env
+.env.swp
