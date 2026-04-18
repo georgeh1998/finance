@@ -3,6 +3,8 @@ import datetime
 from stock import JQuantsProvider
 from swing_trading.scanner import TrendScanner
 
+_RESULT_MD = "scan_result.md"
+
 
 def main():
     provider = JQuantsProvider()
@@ -19,8 +21,13 @@ def main():
         min_consecutive_days=5,
     )
 
-    print(df.to_csv(index=False))
-    print(f"合計: {len(df)} 銘柄")
+    print(df.to_markdown(index=False))
+    print(f"\n合計: {len(df)} 銘柄")
+
+    with open(_RESULT_MD, "w") as f:
+        f.write(f"## スキャン結果 ({end})\n\n")
+        f.write(df.to_markdown(index=False))
+        f.write(f"\n\n合計: {len(df)} 銘柄\n")
 
 
 if __name__ == "__main__":

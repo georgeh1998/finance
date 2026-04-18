@@ -50,7 +50,6 @@ class TrendScanner:
         results: list[ScanResult] = []
 
         for i, (code, name) in enumerate(codes_and_names):
-            print("スキャン中: {} ({}/{})".format(code, i + 1, len(codes_and_names)))
             if i > 0:
                 time.sleep(_RATE_LIMIT_INTERVAL)
 
