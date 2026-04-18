@@ -10,6 +10,9 @@ class FakeProvider(StockDataProvider):
     def __init__(self, daily: pd.DataFrame):
         self._daily = daily
 
+    def get_listed_codes(self, market):
+        return []
+
     def get_daily_bars(self, code, start, end):
         return self._daily
 

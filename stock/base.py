@@ -6,6 +6,18 @@ class StockDataProvider(ABC):
     """株価データ取得プロバイダの抽象基底クラス。"""
 
     @abstractmethod
+    def get_listed_codes(self, market: str) -> list[tuple[str, str]]:
+        """指定市場の上場銘柄一覧を返す。
+
+        Args:
+            market: 市場名（例: "Prime", "Standard", "Growth"）
+
+        Returns:
+            (証券コード, 企業名) のリスト
+        """
+        raise NotImplementedError
+
+    @abstractmethod
     def get_daily_bars(self, code: str, start, end) -> pd.DataFrame:
         """日足OHLCVAを取得する。
 

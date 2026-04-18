@@ -21,6 +21,11 @@ class JQuantsProvider(StockDataProvider):
         load_dotenv()
         self._cli = jquantsapi.ClientV2()
 
+    def get_listed_codes(self, market: str) -> list[tuple[str, str]]:
+        df = self._cli.get_list()
+        filtered = df[df["MktNmEn"] == market]
+        return list(zip(filtered["Code"], filtered["CoName"]))
+
     def get_daily_bars(self, code: str, start, end) -> pd.DataFrame:
         from_dt = pd.Timestamp(start).strftime('%Y%m%d')
         to_dt = pd.Timestamp(end).strftime('%Y%m%d')
