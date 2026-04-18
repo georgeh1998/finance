@@ -19,8 +19,8 @@ def main():
         min_consecutive_days=5,
     )
 
-    print(df.to_string(index=False))
-    print(f"\n合計: {len(df)} 銘柄")
+    print(df.to_csv(index=False))
+    print(f"合計: {len(df)} 銘柄")
 
 
 if __name__ == "__main__":

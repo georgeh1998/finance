@@ -1,0 +1,66 @@
+name: Monthly Market Scan
+
+on:
+  schedule:
+    # 毎月1日 JST 01:00 (UTC 16:00)
+    - cron: "0 16 1 * *"
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run market scan
+        env:
+          JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
+        run: python -m swing_trading.scan_market > scan_result.txt
+
+      - name: Create issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MONTH=$(date -d "$(date +%Y-%m-01)" "+%Y年%-m月" 2>/dev/null || date -v1d "+%Y年%-m月")
+          BODY=$(python - <<'EOF'
+          import csv, sys
+
+          with open("scan_result.txt") as f:
+              lines = f.read().strip().splitlines()
+
+          summary = next((l for l in reversed(lines) if l.startswith("合計")), "")
+          csv_lines = [l for l in lines if not l.startswith("合計")]
+
+          rows = list(csv.reader(csv_lines))
+          if len(rows) < 2:
+              print("該当銘柄なし")
+              sys.exit(0)
+
+          header = rows[0]
+          md = "| " + " | ".join(header) + " |\n"
+          md += "| " + " | ".join(["---"] * len(header)) + " |\n"
+          for row in rows[1:]:
+              md += "| " + " | ".join(row) + " |\n"
+
+          print(md)
+          if summary:
+              print(f"\n**{summary}**")
+          EOF
+          )
+          gh issue create \
+            --title "${MONTH} トレンドスキャン結果" \
+            --body "## ${MONTH} トレンドスキャン結果
+
+          > 対象市場: Prime / 株価上限: 3,000円 / 最低連続日数: 5日
+
+          ${BODY}"
