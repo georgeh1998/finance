@@ -1,3 +1,4 @@
 jquants-api-client
 python-dotenv
 pandas
+tabulate
