@@ -24,7 +24,7 @@ jobs:
 
       - name: Run market scan
         env:
-          JQUANTS_REFRESH_TOKEN: ${{ secrets.JQUANTS_REFRESH_TOKEN }}
+          JQUANTS_API_KEY: ${{ secrets.JQUANTS_API_KEY }}
         run: python -m swing_trading.scan_market > scan_result.txt
 
       - name: Create issue
