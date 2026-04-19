@@ -15,6 +15,7 @@ class ScanResult:
     code: str
     name: str
     price: float
+    volume: float
     trend: TrendType
     consecutive_days: int
 
@@ -33,8 +34,9 @@ class TrendScanner:
         end,
         max_price: float = 3000.0,
         min_consecutive_days: int = 5,
+        min_volume: float = 500_000.0,
     ) -> pd.DataFrame:
-        """指定市場の銘柄をスキャンし、トレンドあり・株価条件を満たす銘柄を返す。
+        """指定市場の銘柄をスキャンし、トレンドあり・株価・出来高条件を満たす銘柄を返す。
 
         Args:
             market: 市場名（例: "Prime"）
@@ -42,9 +44,10 @@ class TrendScanner:
             end: 分析終了日
             max_price: 株価上限（sma5 で代理判定）
             min_consecutive_days: トレンド認定に必要な最低連続日数
+            min_volume: 直近日の出来高下限（デフォルト 500,000 株）
 
         Returns:
-            columns: Code, 企業名, 現在株価, トレンド, 連続日数
+            columns: Code, 企業名, 現在株価, 出来高, トレンド, 連続日数
         """
         codes_and_names = self._provider.get_listed_codes(market)
         results: list[ScanResult] = []
@@ -62,10 +65,14 @@ class TrendScanner:
             if result.sma5 > max_price:
                 continue
 
+            if result.volume < min_volume:
+                continue
+
             results.append(ScanResult(
                 code=code,
                 name=name,
                 price=result.sma5,
+                volume=result.volume,
                 trend=result.trend,
                 consecutive_days=result.consecutive_days,
             ))
@@ -75,13 +82,14 @@ class TrendScanner:
 
 def _to_dataframe(results: list[ScanResult]) -> pd.DataFrame:
     if not results:
-        return pd.DataFrame(columns=["Code", "企業名", "現在株価(SMA5)", "トレンド", "連続日数"])
+        return pd.DataFrame(columns=["Code", "企業名", "現在株価(SMA5)", "出来高", "トレンド", "連続日数"])
 
     rows = [
         {
             "Code": r.code,
             "企業名": r.name,
             "現在株価(SMA5)": r.price,
+            "出来高": r.volume,
             "トレンド": r.trend.value,
             "連続日数": r.consecutive_days,
         }

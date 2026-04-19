@@ -25,6 +25,7 @@ class TrendResult:
     sma5: float
     sma20: float
     sma60: float
+    volume: float = float("nan")
 
 
 def _is_uptrend_row(df: pd.DataFrame) -> pd.Series:
@@ -70,9 +71,10 @@ class TrendDetector:
         if isinstance(code, list):
             return self.detect_batch(code, start, end, min_consecutive_days)
 
-        df = self._provider.get_moving_averages(
-            code, start, end, windows=(5, 20, 60)
-        )
+        daily = self._provider.get_daily_bars(code, start, end)
+        df = daily[["Close"]].copy()
+        for w in (5, 20, 60):
+            df[f"SMA{w}"] = daily["Close"].rolling(w).mean()
         df = df.dropna()
 
         if df.empty:
@@ -88,6 +90,7 @@ class TrendDetector:
 
         last_row = df.iloc[-1]
         evaluated_date = df.index[-1].date()
+        last_volume = daily["Volume"].iloc[-1]
 
         up_count = _count_consecutive_from_tail(_is_uptrend_row(df))
         if up_count >= min_consecutive_days:
@@ -99,6 +102,7 @@ class TrendDetector:
                 sma5=last_row["SMA5"],
                 sma20=last_row["SMA20"],
                 sma60=last_row["SMA60"],
+                volume=last_volume,
             )
 
         down_count = _count_consecutive_from_tail(_is_downtrend_row(df))
@@ -111,6 +115,7 @@ class TrendDetector:
                 sma5=last_row["SMA5"],
                 sma20=last_row["SMA20"],
                 sma60=last_row["SMA60"],
+                volume=last_volume,
             )
 
         return TrendResult(
@@ -121,6 +126,7 @@ class TrendDetector:
             sma5=last_row["SMA5"],
             sma20=last_row["SMA20"],
             sma60=last_row["SMA60"],
+            volume=last_volume,
         )
 
     def detect_batch(
