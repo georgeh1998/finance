@@ -19,6 +19,7 @@ def main():
         end=end,
         max_price=3000.0,
         min_consecutive_days=5,
+        min_volume=500_000,
     )
 
     print(df.to_markdown(index=False))

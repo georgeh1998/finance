@@ -32,9 +32,9 @@ class TrendScanner:
         market: str,
         start,
         end,
-        max_price: float = 3000.0,
-        min_consecutive_days: int = 5,
-        min_volume: float = 500_000.0,
+        max_price: float,
+        min_consecutive_days: int,
+        min_volume: float,
     ) -> pd.DataFrame:
         """指定市場の銘柄をスキャンし、トレンドあり・株価・出来高条件を満たす銘柄を返す。
 
