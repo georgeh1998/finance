@@ -24,6 +24,8 @@ def main():
     print(df.to_markdown(index=False))
     print(f"\n合計: {len(df)} 銘柄")
 
+    df["Code"] = df["Code"].str[:-1]
+
     with open(_RESULT_MD, "w") as f:
         f.write(f"## スキャン結果 ({end})\n\n")
         f.write(df.to_markdown(index=False))
